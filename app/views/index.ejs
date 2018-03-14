@@ -4,6 +4,18 @@
 
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
+
+        <% if(validacao.length > 0){ %>
+          <div class="alert alert-danger">
+            <strong>Alerta!</strong>
+            <ul>
+              <% for(var i = 0; i < validacao.length; i++){ %>
+                <li><%= validacao[i].msg %></li>
+              <% } %>
+            </ul>
+          </div>
+        <% } %>
+
         <form action="/autenticar" method="post" class="form-inline form-entrar">
           <div class="form-group">
             <input type="text" name="usuario" id="usuario" placeholder="Usuário" class="form-control" value=""/>

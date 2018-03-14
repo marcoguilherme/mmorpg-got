@@ -23,5 +23,5 @@ module.exports.cadastrar = function(app, req, res){
 
     usuariosModel.inserirUsuario(dadosForm);
 
-    res.send('Cadastro efetuado com sucesso');
+    res.render('index');
 }
