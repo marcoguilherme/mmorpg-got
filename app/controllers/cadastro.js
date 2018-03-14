@@ -19,7 +19,8 @@ module.exports.cadastrar = function(app, req, res){
     }
 
     var connection = app.config.database;
-    var usuariosModel = new app.app.models.UsuariosModel;
+    var usuariosModel = new app.app.models.UsuariosModel(connection);
+
     usuariosModel.inserirUsuario(dadosForm);
 
     res.send('Cadastro efetuado com sucesso');

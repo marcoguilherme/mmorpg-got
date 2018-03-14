@@ -1,9 +1,14 @@
 function UsuariosModel(connection){
-    connection();
+    this._connection = connection();
 }
 
 UsuariosModel.prototype.inserirUsuario = function(usuario){
-    console.log(usuario);
+    this._connection.open( function(err, mongoclient){
+        mongoclient.collection("usuarios", function(err, collection){
+            collection.insert(usuario);
+            mongoclient.close();
+        })
+    })
 }
 
 module.exports = function(){
