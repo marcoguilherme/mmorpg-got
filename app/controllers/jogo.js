@@ -1,6 +1,6 @@
 module.exports.index = function(app, req, res){
     if(req.session.autenticado){
-        res.render('jogo');
+        res.render('jogo', {img_casa : req.session.casa});
     }else{
         res.render('index', { validacao :{}})
     }
