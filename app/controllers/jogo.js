@@ -1,3 +1,19 @@
 module.exports.index = function(app, req, res){
-    res.render('jogo');
+    if(req.session.autenticado !== true){
+        res.render('index', { validacao :{}})
+        return;
+    }
+
+    var usuario = req.session.usuario;
+    var connection = app.config.database;
+    
+    var jogoModel = new app.app.models.JogoModel(connection);
+    jogoModel.iniciaJogo(usuario, req, res);
+
+}
+
+module.exports.sair = function(app, req, res){
+    req.session.destroy((err)=>{
+        res.render('index', {validacao : {}})
+    })
 }
