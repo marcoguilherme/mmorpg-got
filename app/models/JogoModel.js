@@ -19,6 +19,22 @@ JogoModel.prototype.gerarParametros = function(usuario){
     })
 }
 
+JogoModel.prototype.iniciaJogo = function(usuario, req, res){
+    this._connection.open( function(err, mongoclient){
+        mongoclient.collection("jogo_parametros", function(err, collection){
+            collection.find({
+                usuario : usuario
+            }).toArray(function(err, result){   
+                res.render('jogo', { 
+                    img_casa : req.session.casa,
+                    parametros : result[0]
+                });
+            })
+            mongoclient.close();
+        })
+    })
+}
+
 module.exports = function(){
     return JogoModel;
 }

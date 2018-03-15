@@ -4,7 +4,12 @@ module.exports.index = function(app, req, res){
         return;
     }
 
-    res.render('jogo', {img_casa : req.session.casa});
+    var usuario = req.session.usuario;
+    var connection = app.config.database;
+    
+    var jogoModel = new app.app.models.JogoModel(connection);
+    jogoModel.iniciaJogo(usuario, req, res);
+
 }
 
 module.exports.sair = function(app, req, res){
