@@ -19,7 +19,7 @@ JogoModel.prototype.gerarParametros = function(usuario){
     })
 }
 
-JogoModel.prototype.iniciaJogo = function(usuario, req, res){
+JogoModel.prototype.iniciaJogo = function(usuario, req, res, comando_invalido){
     this._connection.open( function(err, mongoclient){
         mongoclient.collection("jogo_parametros", function(err, collection){
             collection.find({
@@ -27,12 +27,17 @@ JogoModel.prototype.iniciaJogo = function(usuario, req, res){
             }).toArray(function(err, result){   
                 res.render('jogo', { 
                     img_casa : req.session.casa,
-                    parametros : result[0]
+                    parametros : result[0],
+                    comando_invalido : comando_invalido
                 });
             })
             mongoclient.close();
         })
     })
+}
+
+JogoModel.prototype.acao = function(usuario, req, res){
+    
 }
 
 module.exports = function(){

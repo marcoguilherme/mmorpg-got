@@ -11,6 +11,12 @@
 
 	    <div class="container">
 
+			<% if(comando_invalido == 'S'){ %>
+				<div class="alert alert-danger" class="msg_errors">
+					<strong>Comando invalido, verifique os opcoes informadas</strong>
+				</div>
+			<% } %>
+
 			<div class="row">
 	    		<div class="col-sm-3 casa">
 					<img src="images/casa_<%= img_casa %>.jpg" />
@@ -44,7 +50,9 @@
 			<div class="row">
 				<div class="col-sm-3"></div>
 				<div class="col-sm-9">
-					<div class="acoes"></div>
+					<div class="acoes" id="acoes">
+						<h1>Selecione uma tarefa!</h1>
+					</div>
 				</div>
 			</div>
 
@@ -72,5 +80,37 @@
 				</div>
 			</div>
 		</div>
+		<<script>
+			$('#btn_suditos').click((e)=>{
+				e.preventDefault();
+				$('.msg_errors').hide();
+				$.ajax({
+					url : '/suditos',
+					method : 'get',
+					type : 'json',
+					beforeSend : function(pre){
+						$('#acoes').html("<div class='alert alert-info'>Carregando ...</div>");
+					},
+					success  : function(pre){
+						$('#acoes').html(pre);
+					}
+				})
+			})
+
+			$('#btn_pergaminhos').click((e)=>{
+				e.preventDefault();
+				$('.msg_errors').hide();
+				$.ajax({
+					url : '/pergaminhos',
+					method : 'get',
+					beforeSend : function(pre){
+						$('#acoes').html("<div class='alert alert-info'>Carregando ...</div>");
+					},
+					success : function(pre){
+						$('#acoes').html(pre);
+					}
+				})
+			})
+		</script>
 	</body>
 </html>
