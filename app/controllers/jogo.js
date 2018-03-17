@@ -14,6 +14,14 @@ module.exports.index = function(app, req, res){
 
 module.exports.sair = function(app, req, res){
     req.session.destroy((err)=>{
-        res.render('index', {validacao : {}})
+        res.render('index', {validacao : {}});
     })
+}
+
+module.exports.suditos = function(app, req, res){
+    res.render('suditos', {validacao : {}});
+}
+
+module.exports.pergaminhos = function(app, req, res){
+    res.render('pergaminhos', {validacao : {}});
 }
