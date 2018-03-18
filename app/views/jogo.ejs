@@ -11,9 +11,15 @@
 
 	    <div class="container">
 
-			<% if(comando_invalido == 'S'){ %>
-				<div class="alert alert-danger" class="msg_errors">
+			<% if(msg == '1'){ %>
+				<div class="alert alert-danger" class="msg">
 					<strong>Comando invalido, verifique os opcoes informadas</strong>
+				</div>
+			<% } %>
+
+			<% if(msg == '2'){ %>
+				<div class="alert alert-success" class="msg">
+					<strong>Acao realizada com sucesso!</strong>
 				</div>
 			<% } %>
 
@@ -83,7 +89,7 @@
 		<<script>
 			$('#btn_suditos').click((e)=>{
 				e.preventDefault();
-				$('.msg_errors').hide();
+				$('.msg').hide();
 				$.ajax({
 					url : '/suditos',
 					method : 'get',
@@ -99,7 +105,7 @@
 
 			$('#btn_pergaminhos').click((e)=>{
 				e.preventDefault();
-				$('.msg_errors').hide();
+				$('.msg').hide();
 				$.ajax({
 					url : '/pergaminhos',
 					method : 'get',

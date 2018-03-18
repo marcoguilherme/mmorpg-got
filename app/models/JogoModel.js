@@ -19,7 +19,7 @@ JogoModel.prototype.gerarParametros = function(usuario){
     })
 }
 
-JogoModel.prototype.iniciaJogo = function(usuario, req, res, comando_invalido){
+JogoModel.prototype.iniciaJogo = function(usuario, req, res, msg){
     this._connection.open( function(err, mongoclient){
         mongoclient.collection("jogo_parametros", function(err, collection){
             collection.find({
@@ -28,7 +28,7 @@ JogoModel.prototype.iniciaJogo = function(usuario, req, res, comando_invalido){
                 res.render('jogo', { 
                     img_casa : req.session.casa,
                     parametros : result[0],
-                    comando_invalido : comando_invalido
+                    msg : msg
                 });
             })
             mongoclient.close();
@@ -36,8 +36,26 @@ JogoModel.prototype.iniciaJogo = function(usuario, req, res, comando_invalido){
     })
 }
 
-JogoModel.prototype.acao = function(usuario, req, res){
-    
+JogoModel.prototype.acao = function(acao, req, res){
+    this._connection.open( (err, mongoclient)=>{
+        mongoclient.collection('acao', (err, collection)=>{
+            
+            var date = new Date();
+            var tempo = null;
+
+            switch(acao.acao){
+                case '1': tempo = 1 * 60 * 60000;
+                case '2': tempo = 2 * 60 * 60000;
+                case '3': tempo = 5 * 60 * 60000;
+                case '4': tempo = 5 * 60 * 60000;
+            }
+
+            acao.acao_termina_em = date.getTime() + tempo;
+
+            collection.insert(acao);
+            mongoclient.close();
+        })
+    })
 }
 
 module.exports = function(){
