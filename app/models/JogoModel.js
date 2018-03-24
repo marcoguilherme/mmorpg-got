@@ -43,17 +43,35 @@ JogoModel.prototype.acao = function(acao, req, res){
             var date = new Date();
             var tempo = null;
 
-            switch(acao.acao){
-                case '1': tempo = 1 * 60 * 60000;
-                case '2': tempo = 2 * 60 * 60000;
-                case '3': tempo = 5 * 60 * 60000;
-                case '4': tempo = 5 * 60 * 60000;
+            switch(parseInt(acao.acao)){
+                case 1: tempo = 1 * 60 * 60000; break;
+                case 2: tempo = 2 * 60 * 60000; break;
+                case 3: tempo = 5 * 60 * 60000; break;
+                case 4: tempo = 5 * 60 * 60000; break;
             }
 
             acao.acao_termina_em = date.getTime() + tempo;
 
             collection.insert(acao);
             mongoclient.close();
+        })
+    })
+}
+
+JogoModel.prototype.getAcoes = function(usuario, res){
+    this._connection.open( (err, mongoclient)=>{
+        mongoclient.collection('acao', (err, collection)=>{
+
+            var date = new Date();
+            var momento_atual = date.getTime();
+
+            collection.find({ 
+                usuario : usuario, 
+                acao_termina_em : {$gt:momento_atual} 
+            }).toArray((err, result)=>{
+                res.render('pergaminhos', {acoes : result})
+                mongoclient.close();      
+            })
         })
     })
 }

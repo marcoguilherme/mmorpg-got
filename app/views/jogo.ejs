@@ -23,6 +23,12 @@
 				</div>
 			<% } %>
 
+			<% if(msg == '3'){ %>
+				<div class="alert alert-success" class="msg">
+					<strong>Atividade finalizada com sucesso!</strong>
+				</div>
+			<% } %>
+
 			<div class="row">
 	    		<div class="col-sm-3 casa">
 					<img src="images/casa_<%= img_casa %>.jpg" />
@@ -114,9 +120,28 @@
 					},
 					success : function(pre){
 						$('#acoes').html(pre);
+
+						clearTimeout(timerId);
+						cronometro();
 					}
 				})
 			})
+
+			var timerId = null;
+
+			function cronometro(){
+				$(".tempo_restante").each(function(){
+					var segundos = $(this).html();
+					var segundos_atuais = parseInt(segundos) - 1;
+
+					if(segundos_atuais < 0){
+						window.location.href="/jogo?msg=3";
+					}else{
+						$(this).html(segundos_atuais);
+					}
+				});
+				var timerId = setTimeout('cronometro()', 1000);
+			}
 		</script>
 	</body>
 </html>
