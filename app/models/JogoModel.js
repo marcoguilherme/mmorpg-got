@@ -53,8 +53,27 @@ JogoModel.prototype.acao = function(acao, req, res){
             acao.acao_termina_em = date.getTime() + tempo;
 
             collection.insert(acao);
+        })
+
+        mongoclient.collection('jogo_parametros', (err, collection)=>{
+            
+            var moeda = null;
+
+            switch(parseInt(acao.acao)){
+                case 1: moeda = -2 * acao.quantidade; break;
+                case 2: moeda = -3 * acao.quantidade; break;
+                case 3: moeda = -1 * acao.quantidade; break;
+                case 4: moeda = -1 * acao.quantidade; break;
+            }
+
+            collection.update(
+                {usuario : acao.usuario},
+                {$inc: { moeda : moeda}}
+            )
+            
             mongoclient.close();
         })
+        
     })
 }
 
