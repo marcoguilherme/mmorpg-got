@@ -1,3 +1,5 @@
+var ObjectID = require('mongodb').ObjectId;
+
 function JogoModel(connection){
     this._connection = connection();
 }
@@ -91,6 +93,17 @@ JogoModel.prototype.getAcoes = function(usuario, res){
                 res.render('pergaminhos', {acoes : result})
                 mongoclient.close();      
             })
+        })
+    })
+}
+
+JogoModel.prototype.revogar_ordem = function(_id, res){
+    this._connection.open((err, mongoclient)=>{
+        mongoclient.collection('acao', (err, collection)=>{
+            collection.remove({_id : ObjectID(_id)}, (err, result)=>{
+                res.redirect('jogo');
+            });
+            mongoclient.close();
         })
     })
 }

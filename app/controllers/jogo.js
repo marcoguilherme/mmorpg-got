@@ -70,3 +70,14 @@ module.exports.ordernar_acao_sudito = function(app,req,res){
     res.redirect('jogo?msg=2');
 
 }
+
+module.exports.revogar_ordem = function(app, req, res){
+
+    var _id = req.query.id_ordem;
+
+    var connection = app.config.database;
+
+    var jogoModel = new app.app.models.JogoModel(connection);
+    jogoModel.revogar_ordem(_id, res);
+    
+}
