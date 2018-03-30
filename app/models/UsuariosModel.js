@@ -1,3 +1,5 @@
+var crypto = require('crypto');
+
 function UsuariosModel(connection){
     this._connection = connection();
 }
@@ -5,6 +7,9 @@ function UsuariosModel(connection){
 UsuariosModel.prototype.inserirUsuario = function(usuario){
     this._connection.open( function(err, mongoclient){
         mongoclient.collection("usuarios", function(err, collection){
+
+           usuario.senha = crypto.createHash("md5").update(usuario.senha).digest("hex");
+
             collection.insert(usuario);
             mongoclient.close();
         })
@@ -14,6 +19,9 @@ UsuariosModel.prototype.inserirUsuario = function(usuario){
 UsuariosModel.prototype.autenticarUsuario = function(usuario, req, res){
     this._connection.open( function(err, mongoclient){
         mongoclient.collection("usuarios", function(err, collection){
+
+            usuario.senha = crypto.createHash("md5").update(usuario.senha).digest("hex");
+            
             collection.find(usuario).toArray(function(err, result){
                 if( result[0] != undefined ){
                     req.session.autenticado = true;
